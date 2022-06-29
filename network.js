@@ -22,5 +22,5 @@ Used to set the network: https://chainlist.org/
 338 Cronos Testnet
 */
 
-window.web3ChainId = 80001;
-window.web3NetworkName= "Mumbai Testnet";
+window.web3ChainId = 42262;
+window.web3NetworkName= "Oasis Emerald Mainnet";
