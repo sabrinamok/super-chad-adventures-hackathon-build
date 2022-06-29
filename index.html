@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Survival Game</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="TemplateData/style.css">
+  </head>
+
+  <style>
+    body {
+      font-family: arial;
+      color:#fff;
+      font-size:14px;
+    }
+    #unity-build-title {
+      width:100%;
+    }
+    h2 {
+      font-size: 16px;
+    }
+    h3 {
+      font-size:14px;
+    }
+    .weapons {
+      display:grid;
+      grid-column-gap:40px;
+      column-gap: 40px;
+      text-align: center;
+      grid-template-columns: repeat(5, 1fr);
+    }
+    #unity-build-title {
+      float:none;
+      position: relative;
+    }
+    .weapons-wrapper {
+      margin-top:40px;
+    }
+    #unity-container.unity-desktop {
+    left: 50%;
+    top:auto;
+    transform: translate(-50%, 0);
+    padding: 80px 0;
+  }
+  .weapons-wrapper img {
+    height:50px;
+  }
+  .weapons-wrapper p {
+    margin:.5em 0;
+  }
+  .treasure {
+    text-align: center;
+  }
+  </style>
+
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas" width=1280 height=720></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-warning"> </div>
+      <div id="unity-footer">
+        <!--<div id="unity-webgl-logo"></div>-->
+        <div id="unity-fullscreen-button"></div>
+        <!--<<div id="unity-build-title">Oasis Game</div>-->
+        <div id="unity-build-title">Survival Game</div>
+        <div class="weapons-wrapper treasure">
+          <h2>TREASURE CHEST</h2>
+            <div class="weapon">
+              <h3>OPEN UP THE CHEST TO EARN MORE PTS</h3>
+              <img src="./img/chest.png">
+              <p>Earn up to DOUBLE of your current points</p>
+              <p>Chest appears every 20 seconds, gets destroyed 10 seconds</p>
+            </div>
+        </div>
+        <div class="weapons-wrapper">
+          <h2>WEAPONS</h2>
+          <div class="weapons">
+            <div class="weapon">
+              <h3>0 POINTS</h3>
+              <img src="./img/basic.png"><br><b>Basic Weapon</b>
+              <!--<p>Fire Rate: 1</p>-->
+              <p>Damage: 5</p>
+            </div>
+            <div class="weapon">
+              <h3>40 POINTS</h3>
+              <img src="./img/07.png"><br><b>Faster Weapon</b> 
+              <p>Fire Rate: 2</p>
+              <p>Damage: 10</p>
+            </div>
+            <div class="weapon">
+              <h3>400 POINTS</h3>
+              <img src="./img/stronger.png"><br><b>Stronger Weapon</b> 
+              <p>Fire Rate: 2</p>
+              <p>Damage: 20</p>
+            </div>
+            <div class="weapon">
+              <h3>850 POINTS</h3>
+              <img src="./img/wave.png"><br><b>Wave Weapon</b> 
+              <!--<p>Fire Rate: 0.5</p>-->
+              <p>Damage: 30</p>
+            </div>
+            <div class="weapon">
+              <h3>3000 POINTS</h3>
+              <img src="./img/Fire.png"><br><b>Grenade</b> 
+              <!--<p>Fire Rate: 1</p>-->
+              <p>Damage: 70</p>
+            </div>
+          </div>
+        </div>
+        <div class="weapons-wrapper">
+          <h2>ENEMIES & REWARDS</h2>
+          <div class="weapons">
+            <div class="weapon">
+              <h3>ZOMBIE</h3>
+              <img src="./img/Zombie.png">
+              <p>Health: 25</p>
+              <p>Pts Reward: 5</p>
+            </div>
+            <div class="weapon">
+              <h3>GOBLIN</h3>
+              <img src="./img/Goblin.png">
+              <p>Health: 30</p>
+              <p>Pts Reward: 20</p>
+            </div>
+            <div class="weapon">
+              <h3>GHOUL</h3>
+              <img src="./img/Ghoul.png">
+              <p>Health: 70</p>
+              <p>Pts Reward: 50</p>
+            </div>
+          </div>
+        </div>
+        <div class="weapons-wrapper">
+          <h2>WEAPON PICKUP</h2>
+          <div class="weapons">
+            <div class="weapon">
+              <img src="./img/Small_blue.png">
+              <p>Basic Weapon</p>
+            </div>
+            <div class="weapon">
+              <img src="./img/Big_flask.png">
+              <p>Faster Weapon</p>
+            </div>
+            <div class="weapon">
+              <img src="./img/Big_red.png">
+              <p>Stronger Weapon</p>
+            </div>
+            <div class="weapon">
+              <img src="./img/water.png">
+              <p>Wave Weapon</p>
+            </div>
+            <div class="weapon">
+              <img src="./img/Fire.png">
+              <p>Grenade</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <script src="web3/index.js"></script>
+    <script>
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var warningBanner = document.querySelector("#unity-warning");
+
+      // Shows a temporary message banner/ribbon for a few seconds, or
+      // a permanent error message on top of the canvas if type=='error'.
+      // If type=='warning', a yellow highlight color is used.
+      // Modify or remove this function to customize the visually presented
+      // way that non-critical warnings and error messages are presented to the
+      // user.
+      function unityShowBanner(msg, type) {
+        function updateBannerVisibility() {
+          warningBanner.style.display = warningBanner.children.length ? 'block' : 'none';
+        }
+        var div = document.createElement('div');
+        div.innerHTML = msg;
+        warningBanner.appendChild(div);
+        if (type == 'error') div.style = 'background: red; padding: 10px;';
+        else {
+          if (type == 'warning') div.style = 'background: yellow; padding: 10px;';
+          setTimeout(function() {
+            warningBanner.removeChild(div);
+            updateBannerVisibility();
+          }, 5000);
+        }
+        updateBannerVisibility();
+      }
+
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/game.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/game.data",
+        frameworkUrl: buildUrl + "/game.framework.js",
+        codeUrl: buildUrl + "/game.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "DefaultCompany",
+        productName: "Oasis Game",
+        productVersion: "1.0",
+        showBanner: unityShowBanner,
+      };
+
+      // By default Unity keeps WebGL canvas render target size matched with
+      // the DOM size of the canvas element (scaled by window.devicePixelRatio)
+      // Set this to false if you want to decouple this synchronization from
+      // happening inside the engine, and you would instead like to size up
+      // the canvas DOM size and WebGL render target sizes yourself.
+      // config.matchWebGLToCanvasSize = false;
+
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        // Avoid draining fillrate performance on mobile devices,
+        // and default/override low DPI mode on mobile browsers.
+        config.devicePixelRatio = 1;
+        unityShowBanner('WebGL builds are not supported on mobile devices.');
+      } else {
+        canvas.style.width = "1280px";
+        canvas.style.height = "720px";
+      }
+      loadingBar.style.display = "block";
+
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          fullscreenButton.onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>
